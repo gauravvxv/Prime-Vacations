@@ -24,6 +24,9 @@ export default function Login() {
    if (res.ok && data.role) {
     localStorage.setItem('token', data.token);
     localStorage.setItem('role', data.role); 
+    localStorage.setItem('email',data.email)
+    localStorage.setItem('userID',data._id)
+
 
     if (data.role === 'admin') {
       router.push('/admin'); 

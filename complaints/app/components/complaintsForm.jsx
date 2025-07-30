@@ -30,13 +30,20 @@ export default function ComplaintForm() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
+const email = localStorage.getItem('email');
       const res = await fetch('/api/complaints', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title, description, category, priority }),
+        body: JSON.stringify({
+           title,
+           description, 
+           category,
+            priority,
+            email
+           }),
       });
 
       const data = await res.json();
