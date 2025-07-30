@@ -15,8 +15,23 @@ A full-stack complaint management system built with **Next.js**, **MongoDB**, an
 
 ---
 
-## Folder Structure
-<pre lang="markdown"> ``` 📦 Prime-Vacations ├── api │ ├── admin │ │ ├── complaint │ │ │ └── [id] │ │ │ └── route.js # PUT/DELETE: update or delete complaint │ │ └── route.js # GET: fetch all complaints for admin │ ├── complaints │ │ └── route.js # POST: create complaint (user) │ ├── login │ │ └── route.js # POST: user login │ └── signup │ └── route.js # POST: user registration ├── components │ └── ComplaintForm.jsx # Complaint form UI ├── login │ └── page.jsx # Login page UI ├── signup │ └── page.jsx # Signup page UI ├── models │ ├── complaints.js # Mongoose schema for complaints │ └── user.js # Mongoose schema for users ├── utils │ ├── connect.js # MongoDB connection │ └── mailer.js # Email utility (NodeMailer) ``` </pre>
+### 📁 Folder Structure
+
+| Path                            | File             | Description                                           |
+|---------------------------------|------------------|-------------------------------------------------------|
+| `/api/admin/complaint/[id]/`    | `route.js`       | `PUT/DELETE` – Update or delete a complaint           |
+| `/api/admin/`                   | `route.js`       | `GET` – Fetch all complaints for admin                |
+| `/api/complaints/`              | `route.js`       | `POST` – Submit a new complaint (user)                |
+| `/api/login/`                   | `route.js`       | `POST` – User login endpoint                          |
+| `/api/signup/`                  | `route.js`       | `POST` – User registration endpoint                   |
+| `/components/`                  | `ComplaintForm.jsx` | Complaint form UI component                       |
+| `/login/`                       | `page.jsx`       | Login page UI                                         |
+| `/signup/`                      | `page.jsx`       | Signup page UI                                        |
+| `/models/`                      | `complaints.js`  | Mongoose schema for complaints                        |
+| `/models/`                      | `user.js`        | Mongoose schema for users                             |
+| `/utils/`                       | `connect.js`     | MongoDB connection utility                            |
+| `/utils/`                       | `mailer.js`      | NodeMailer utility for sending emails                 |
+
 
 ## 📸 Screenshots
 
