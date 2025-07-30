@@ -16,31 +16,7 @@ A full-stack complaint management system built with **Next.js**, **MongoDB**, an
 ---
 
 ## Folder Structure
-/ (root)
-├── api
-│ ├── admin
-│ │ ├── complaint
-│ │ │ └── [id]
-│ │ │ └── route.js # PUT/DELETE: update or delete complaint
-│ │ └── route.js # GET: fetch all complaints for admin
-│ ├── complaints
-│ │ └── route.js # POST: create complaint (user)
-│ ├── login
-│ │ └── route.js # POST: user login
-│ └── signup
-│ └── route.js # POST: user registration
-├── components
-│ └── ComplaintForm.jsx # Complaint form UI
-├── login
-│ └── page.jsx # Login page UI
-├── signup
-│ └── page.jsx # Signup page UI
-├── models
-│ ├── complaints.js # Mongoose schema for complaints
-│ └── user.js # Mongoose schema for users
-├── utils
-│ ├── connect.js # MongoDB connection
-│ └── mailer.js # Email utility (NodeMailer)
+<pre lang="markdown"> ``` 📦 Prime-Vacations ├── api │ ├── admin │ │ ├── complaint │ │ │ └── [id] │ │ │ └── route.js # PUT/DELETE: update or delete complaint │ │ └── route.js # GET: fetch all complaints for admin │ ├── complaints │ │ └── route.js # POST: create complaint (user) │ ├── login │ │ └── route.js # POST: user login │ └── signup │ └── route.js # POST: user registration ├── components │ └── ComplaintForm.jsx # Complaint form UI ├── login │ └── page.jsx # Login page UI ├── signup │ └── page.jsx # Signup page UI ├── models │ ├── complaints.js # Mongoose schema for complaints │ └── user.js # Mongoose schema for users ├── utils │ ├── connect.js # MongoDB connection │ └── mailer.js # Email utility (NodeMailer) ``` </pre>
 
 ## 📸 Screenshots
 
