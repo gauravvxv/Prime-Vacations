@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
@@ -10,7 +10,16 @@ export default function ComplaintForm() {
   const [category, setCategory] = useState('Product');
   const [priority, setPriority] = useState('Low');
   const [loading, setLoading] = useState(false);
+  const [message,setMessage] = useState("");
   const router = useRouter();
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login'); 
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (!title || !description || !category || !priority) {
@@ -32,14 +41,14 @@ export default function ComplaintForm() {
 
       const data = await res.json();
       if (res.ok) {
-        alert('Complaint submitted successfully!');
+        setMessage('Complaint submitted successfully!');
         setTitle('');
         setDescription('');
         setCategory('Product');
         setPriority('Low');
         router.refresh();
       } else {
-        alert(data.message || 'Failed to submit complaint.');
+        setMessage(data.message || 'Failed to submit complaint.');
       }
     } catch (err) {
       console.error(err);
@@ -48,8 +57,22 @@ export default function ComplaintForm() {
     setLoading(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 to-blue-100 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-yellow-100 to-blue-100 px-4">
+      <div className="w-full max-w-4xl flex justify-end mt-4">
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition"
+        >
+          Logout
+        </button>
+      </div>
+
       <motion.div
         className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg"
         initial={{ opacity: 0, y: -20 }}
@@ -116,6 +139,9 @@ export default function ComplaintForm() {
         >
           {loading ? 'Submitting...' : 'Submit Complaint'}
         </motion.button>
+         <p className='text-blue-500 flex justify-center pt-5'>
+          {message}
+        </p>
       </motion.div>
     </div>
   );

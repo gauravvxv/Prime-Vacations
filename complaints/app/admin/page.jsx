@@ -1,30 +1,62 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {jwtDecode} from 'jwt-decode';
 
 export default function AdminDashboard() {
   const [complaints, setComplaints] = useState([]);
   const [filterStatus, setFilterStatus] = useState('');
   const [filterPriority, setFilterPriority] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
-  const fetchComplaints = async () => {
-    const token = localStorage.getItem('token');
-    const res = await fetch('/api/admin/complaints', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await res.json();
-    setComplaints(data);
+  const fetchComplaints = async (token) => {
+    try {
+      const res = await fetch('/api/admin/complaint', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setComplaints(data);
+      } else {
+        console.error('Failed to fetch complaints');
+      }
+    } catch (error) {
+      console.error('Error fetching complaints:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchComplaints();
-  }, []);
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-  const updateStatus = async (id, newStatus)=> {
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    try {
+     const decoded = jwtDecode(token);
+      if (decoded.role !== 'admin') {
+        router.push('/'); 
+        return;
+      }
+
+      fetchComplaints(token);
+    } catch (err) {
+      console.error('Invalid token');
+      router.push('/login');
+    }
+  }, [router]);
+
+  const updateStatus = async (id, newStatus) => {
     const token = localStorage.getItem('token');
-    const res = await fetch(`/api/admin/complaints/${id}`, {
+    const res = await fetch(`/api/admin/complaint/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -34,9 +66,38 @@ export default function AdminDashboard() {
     });
 
     if (res.ok) {
-      fetchComplaints(); // refresh list
+      fetchComplaints(token); 
     }
   };
+
+  const handleDelete = async (id) => {
+  const confirm = window.confirm('Are you sure you want to delete this complaint?');
+  if (!confirm) return;
+
+  const token = localStorage.getItem('token');
+  try {
+    const res = await fetch(`/api/admin/complaint/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.ok) {
+      fetchComplaints(token); 
+    } else {
+      console.error('Failed to delete complaint');
+    }
+  } catch (error) {
+    console.error('Error deleting complaint:', error);
+  }
+};
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
+
 
   const filteredComplaints = complaints.filter((c) => {
     return (
@@ -45,9 +106,23 @@ export default function AdminDashboard() {
     );
   });
 
+  if (isLoading) {
+    return <div className="p-8 text-center text-gray-600">Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
+  
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Admin Complaint Dashboard</h2>
+
+           <div className="w-full max-w-4xl flex justify-center pl-68">
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition"
+        >
+          Logout
+        </button>
+      </div>
 
       <div className="flex gap-4 mb-6">
         <select
@@ -91,7 +166,9 @@ export default function AdminDashboard() {
                 <td className="py-2 px-4 font-medium">{complaint.title}</td>
                 <td className="py-2 px-4">{complaint.category}</td>
                 <td className="py-2 px-4">{complaint.priority}</td>
-                <td className="py-2 px-4">{new Date(complaint.createdAt).toLocaleDateString()}</td>
+                <td className="py-2 px-4">
+                  {new Date(complaint.createdAt).toLocaleDateString()}
+                </td>
                 <td className="py-2 px-4">
                   <select
                     value={complaint.status}
@@ -103,17 +180,17 @@ export default function AdminDashboard() {
                     <option value="Resolved">Resolved</option>
                   </select>
                 </td>
-                <td className="py-2 px-4">
-                  <button
-                    onClick={() => alert(complaint.description)}
-                    className="text-blue-600 hover:underline"
-                  >
-                    View
-                  </button>
-                </td>
+              <td className="py-2 px-4 flex gap-2">
+  <button
+    onClick={() => handleDelete(complaint._id)}
+    className="text-red-600 hover:underline"
+  >
+    Delete
+  </button>
+</td>
+
               </tr>
             ))}
-
             {filteredComplaints.length === 0 && (
               <tr>
                 <td colSpan={6} className="text-center py-6 text-gray-500">

@@ -18,13 +18,22 @@ export default function Login() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
+
     const data = await res.json();
-    if (data.token) {
-      localStorage.setItem('token', data.token);
-      router.push(data.role === 'admin' ? '/admin' : '/');
+
+   if (res.ok && data.role) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('role', data.role); 
+
+    if (data.role === 'admin') {
+      router.push('/admin'); 
     } else {
-      setMessage(data.message || 'Login failed');
+      router.push('/'); 
     }
+  } else {
+    setMessage(data.message || 'Login failed');
+  }
+
   };
 
   return (
