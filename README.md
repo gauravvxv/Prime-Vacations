@@ -37,10 +37,12 @@ A full-stack complaint management system built with **Next.js**, **MongoDB**, an
 
 
 ### 📝 Complaint Submission Form
-![Complaint Form](<img width="875" height="437" alt="Screenshot 2025-07-31 030103" src="https://github.com/user-attachments/assets/5df24ed7-c043-4d81-b2e7-3558d8eb5a48" />)
+<img width="875" height="437" alt="Screenshot 2025-07-31 030103" src="https://github.com/user-attachments/assets/76a1d286-2338-4f60-bb20-6869469ef764" />
+
 
 ### 📊 Admin Complaint Dashboard
-![Admin Dashboard](<img width="944" height="441" alt="Screenshot 2025-07-31 030231" src="https://github.com/user-attachments/assets/f2b46048-8f53-4efd-895a-d9b167efa7ec" />)
+<img width="944" height="441" alt="Screenshot 2025-07-31 030231" src="https://github.com/user-attachments/assets/50f1ea9d-c532-45a9-8155-dfaef9b3bde1" />
+
 
 ---
 
